@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{title}} {{data.id}}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+            <li class="breadcrumb-item">{{title}} {{data.id}}</li>
+        </ol>
+  
+    <div class="pt-3 pb-3 pl-2 bg-dark">
+    <h3 class="text-white">{{title}} {{data.id}}</h3>
+    </div>
+
+       
+  {% for rw in row %}
+    {% if rw=="nom"%}
+      <div class="mt-4 mb-4 form-group">
+          <h5 class="ml-4">Nom</h5>
+          <div  class="text-justify ml-4">
+            {{ attribute(data,rw) }}
+          </div>
+      </div>
+       {% elseif rw=="choix1"%}
+       <div class="mt-4 mb-4 form-group">
+          <h5 class="ml-4">Question 1</h5>
+          <div  class="text-justify ml-4">
+            {{ attribute(data,rw) }}
+          </div>
+      </div>
+       {% elseif rw=="vote1"%}
+      <div class="mt-4 mb-4 form-group">
+          <h5 class="ml-4">Nombre de vote question 1</h5>
+          <div  class="text-justify ml-4">
+            {{ attribute(data,rw) }}
+          </div>
+      </div>
+      {% elseif rw=="choix2"%}
+       <div class="mt-4 mb-4 form-group">
+          <h5 class="ml-4">Question 2</h5>
+          <div  class="text-justify ml-4">
+            {{ attribute(data,rw) }}
+          </div>
+      </div>
+      {% elseif rw=="vote2"%}
+       <div class="mt-4 mb-4 form-group">
+          <h5 class="ml-4">Nombre de vote question  2</h5>
+          <div  class="text-justify ml-4">
+            {{ attribute(data,rw) }}
+          </div>
+      </div>
+       {% elseif rw=="pseudo"%}
+       <div class="mt-4 mb-4 form-group">
+          <h5 class="ml-4">Pseudo Facebook</h5>
+          <div  class="text-justify ml-4">
+            {{ attribute(data,rw) }}
+          </div>
+      </div>
+      {% elseif rw=="category"%}
+       <div class="mt-4 mb-4 form-group">
+          <h5 class="ml-4">Category</h5>
+          <div  class="text-justify ml-4">
+            {{ attribute(data,rw) }}
+          </div>
+      </div>
+      {% elseif rw=="createdAt"%}
+       <div class="mt-4 mb-4 form-group">
+          <h5 class="ml-4">Date d'ajout</h5>
+          <div  class="text-justify ml-4">
+            {{ attribute(data,rw )| date }}
+          </div>
+      </div>
+      
+      {% elseif rw=="updatedAt"%}
+         <div class="mt-4 mb-4 form-group">
+          <h5 class="ml-4">Date du dernier mis à jour</h5>
+          <div  class="text-justify ml-4">
+            {{ attribute(data,rw) | date }}
+          </div>
+      </div>
+      
+      {%else%}
+
+      {# <table class="table">
+            <tr>
+                <th><h5>Autre</h5></th>
+                <td class="text-right"><a>{{ attribute(data,rw) }}</a>
+                  
+                </td>
+            </tr>
+         </table>  
+      #}  
+    {%endif%}        
+  {% endfor %}
+
+   <a class="btn btn-primary" href="{{ path(routePrefix  ~'_index') }}"> <i class="fa fa-angle-double-left"></i> Revenir à la liste</a>
+
+    <a class="btn btn-primary" href="{{ path(routePrefix ~'_edit', {'id': data.id}) }}"><i class="fa fa-edit"></i> Editer</a>
+    </div>
+</div>
+{% endblock %}

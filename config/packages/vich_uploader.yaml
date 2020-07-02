@@ -1,0 +1,10 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+      attachements:
+        uri_prefix: /images/attachements
+        upload_destination: '%kernel.project_dir%/public/images/attachements'
+        inject_on_load: false
+        delete_on_update: true
+        delete_on_remove: true

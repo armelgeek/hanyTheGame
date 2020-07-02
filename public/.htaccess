@@ -1,0 +1,3 @@
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [QSA,L]
+Header append X-FRAME-OPTIONS "SAMEORIGIN"

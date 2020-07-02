@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+        Administration |
+            {% block title %}
+                
+            {% endblock %}
+        </title>
+
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <style>
+                .container{
+                    padding-left: 70px;
+                    padding-right: 70px;
+                }
+                .bullet {
+                    display: block;
+                    width: 10px;
+                    border-radius: 10px;
+                    height: 10px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    background: #23DB72;
+                }
+                .bullet--danger {
+                    background: #FB4635;
+                }
+                .automatic_form_slogan{
+                    display: flex;
+                }
+                .sortable,.asc,.desc
+                {
+                    color:#fff!important;
+                    text-decoration: none;
+                }
+                .asc:hover,.asc:active,.desc:hover.desc:active,.sortable:hover,.sortable:active{
+                    color:#fff!important;
+                }
+                .tablo{
+                    background: rgba(0, 0, 0, 0.05);
+                }
+                .vich-image img{
+                    width: 200px;
+                    max-width: 200px;
+                }
+                label,legend{
+                 font-weight: bold;
+                 font-size: 16px;
+                 margin-bottom: 15px;
+                }
+            </style>
+        {% endblock %}
+        <script src="{{ asset('js/jq.js') }}"></script>
+        <script src="{{ asset('js/script.js') }}"></script>
+
+
+
+    </head>
+    <body>
+
+        {% block menu %}
+			{{include('menu.html.twig')}}
+        {% endblock %}
+
+        <div class="container mt-4">
+
+
+            <div class="row">
+                <div class="col-lg-12">
+            {% block flash %}
+            {{include('flash.html.twig')}} 
+            {% endblock %}
+
+            {% block body %}
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+
+        {% endblock %}
+
+            {# On charge la bibliothèque jQuery. Ici, je la prends depuis le CDN google
+               mais si vous l'avez en local, changez simplement l'adresse. #}
+
+        {# Voici le script en question : #}
+        <script type="text/javascript">
+
+            $(document).ready(function() {
+                if (typeof  $container !== 'undefined') {
+                 $container.css({'background':'#e3e3e3','padding':'25px'});
+                var index = $container.find(':input').length;
+                $('#add_'+$selection).click(function(e) {
+                    addContent($container);
+                    e.preventDefault();
+                    return false;
+                });
+
+                if (index == 0) {
+                    addContent($container);
+                } else {
+                    // S'il existe déjà des catégories, on ajoute un lien de suppression pour chacune d'entre elles
+                    $container.children('div').each(function() {
+                        addDeleteLink($(this));
+                    });
+                }
+
+                // La fonction qui ajoute un formulaire CategoryType
+                function addContent($container) {
+                    // Dans le contenu de l'attribut « data-prototype », on remplace :
+                    // - le texte "__name__label__" qu'il contient par le label du champ
+                    // - le texte "__name__" qu'il contient par le numéro du champ
+                    var template = $container.attr('data-prototype')
+                        .replace(/__name__label__/g, 'N°:' + (index+1))
+                        .replace(/__name__/g,        index)
+                    ;
+
+                    // On crée un objet jquery qui contient ce template
+                    var $prototype = $(template);
+
+                    // On ajoute au prototype un lien pour pouvoir supprimer la catégorie
+                    addDeleteLink($prototype);
+
+                    // On ajoute le prototype modifié à la fin de la balise <div>
+                    $container.append($prototype);
+
+                    // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+                    index++;
+                }
+
+                // La fonction qui ajoute un lien de suppression d'une catégorie
+                function addDeleteLink($prototype) {
+                    // Création du lien
+                    var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+
+                    // Ajout du lien
+                    $prototype.append($deleteLink);
+
+                    // Ajout du listener sur le clic du lien pour effectivement supprimer la catégorie
+                    $deleteLink.click(function(e) {
+                        $prototype.remove();
+
+                        e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+                        return false;
+                    });
+                }
+
+                }
+            });
+            autosize(document.querySelectorAll('textarea'));
+           var adminNs ={
+            initDraggableEntityRows: function() {
+            var dragSrcEl = null; // the object being drug
+            var startPosition = null; // the index of the row element (0 through whatever)
+            var endPosition = null; // the index of the row element being dropped on (0 through whatever)
+            var parent; // the parent element of the dragged item
+            var entityId; // the id (key) of the entity
+            function handleDragStart(e) {
+                e.preventDefault;
+                dragSrcEl = this;
+                entityId = $(this).attr('rel');
+                dragSrcEl.style.opacity = '0.4';
+                parent = dragSrcEl.parentNode;
+                startPosition = Array.prototype.indexOf.call(parent.children, dragSrcEl);
+                console.log("start: "+startPosition);
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', this.innerHTML);
+                console.log(entityId);
+            }
+            function handleDragOver(e) {
+            //console.log('drag over: '+ e.target);
+            if (e.preventDefault) {
+               e.preventDefault(); // Necessary. Allows us to drop.
+            }
+            e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+            return false;
+            }
+            function handleDragEnter(e) {
+            this.classList.add('over');
+            }
+            function handleDragLeave(e) {
+                this.classList.remove('over');
+            }
+            function handleDrop(e) {
+            if (e.stopPropagation) {e.stopPropagation();
+            }
+            if (dragSrcEl != this) {endPosition = Array.prototype.indexOf.call(parent.children, this);console.log("end: "+endPosition);
+            dragSrcEl.innerHTML = this.innerHTML;
+            this.innerHTML = e.dataTransfer.getData('text/html');
+            $.ajax({url: '/question/sorting/'+entityId+'/'+endPosition})
+            .done(function(res) {
+                $("table.sortable tbody").replaceWith(
+                    $(res).find("table.sortable tbody"));}
+                ).fail(function(err) {
+                    alert("An error occurred while sorting. Please refresh the page and try again.")}
+                    ).always(
+                    function() {
+                        adminNs.initDraggableEntityRows();});}
+                    return false;
+            }
+            function handleDragEnd(e) {
+                this.style.opacity = '1';  
+                [].forEach.call(rows, function (row) {
+                    row.classList.remove('over');});
+            }
+            var rows = document.querySelectorAll('table.sortable > tbody tr');[].forEach.call(rows, function(row) {row.addEventListener('dragstart', handleDragStart, false);row.addEventListener('dragenter', handleDragEnter, false);row.addEventListener('dragover', handleDragOver, false);row.addEventListener('dragleave', handleDragLeave, false);row.addEventListener('drop', handleDrop, false);row.addEventListener('dragend', handleDragEnd, false);});},
+            init: function() {this.initDraggableEntityRows();return true;}
+            };$(function() {adminNs.init();});
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,45 @@
+{% extends('base.html.twig') %}
+
+{% block body %}
+
+<div class="row mt-4">
+<div class="col-6">
+	<h3>Modifier mon profil</h3>
+    <div class="row">
+        <div class="col-sm-12">
+            {{ form_row(formUpdate.username) }}
+
+        </div>
+        <div class="col-sm-12">
+            {{ form_row(formUpdate.email) }}
+        </div>    
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-primary" name="action" value="update">Enregistrer</button>
+        </div>
+</div>
+{{ form_end(formUpdate) }}
+
+
+
+</div>
+<div class="col-6">
+
+<h3>Modifier mon mot de passe</h3>
+{{ form_start(formPassword) }}
+    <div class="row">
+        <div class="col-sm-12">
+            {{ form_row(formPassword.plainPassword.first) }}
+        </div>
+        <div class="col-sm-12">
+            {{ form_row(formPassword.plainPassword.second) }}
+        </div>
+
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-primary" name="action" value="password">Enregistrer</button>
+        </div>
+    </div>
+{{ form_end(formPassword) }}
+</div>
+{{ form_start(formUpdate) }}
+
+{% endblock %}

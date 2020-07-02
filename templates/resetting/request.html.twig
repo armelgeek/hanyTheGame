@@ -1,0 +1,23 @@
+{% extends('user-base.html.twig') %}
+
+{% block body %}
+<div class="row" style="margin-top:125px">
+                <div class="col-lg-offset-4 col-md-offset-3 col-sm-offset-3 col-xs-offset-0 col-xs-12 col-sm-6 col-lg-4">
+                    <div class="box">
+                        <div class="content-main">
+                         
+                <h1>Mot de passe oublié ?</h1>
+                <p>Demandez à réinitialiser votre mot de passe en renseignant votre mail.</p>
+
+                {{form_start(form)}}
+                <div class="form-group">
+                    {{form_label(form.email,"Adresse e-mail")}}
+                    {{form_widget(form.email)}}
+                </div>
+      
+                <button class="btn btn-accent btn-block" type="submit">Envoyer</button>
+                {{form_end(form)}}
+            </div>
+        </div>
+    </div>
+{% endblock %}

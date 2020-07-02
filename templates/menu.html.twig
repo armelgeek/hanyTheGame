@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">GAME</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Questions
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{{ path('question_index') }}">Questions</a>
+          <a class="dropdown-item" href="{{ path('category_index') }}">Categories</a>
+        </div>
+    </li>
+    
+    </ul>
+        <ul class="navbar-nav ml-auto">
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="#">Espace admin</a>
+            {% endif %}
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li class="nav-item">Connecté en tant que: {{ app.user.username }}</li>
+                <li class="nav-item"><a href="{{path('account')}}" class="nav-link">Nom Compte</a></li>
+                <li class="nav-item"><a href="{{path('app_logout')}}" class="nav-link">Sé déconnecter</a></li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{{path('app_login')}}" class="nav-link">Connexion</a>
+                </li>
+            {% endif %}
+
+
+        </ul>
+    </div>
+</nav>
+

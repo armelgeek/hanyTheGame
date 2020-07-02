@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+            <li class="breadcrumb-item">{{title}}</li>
+        </ol>
+        <div class="page-header">
+            <h1>{{title}}</h1>
+        </div>
+    {% if app.request.get('q') !='' %}
+            <div class="alert alert-info">
+                Resultat de recherche sur : <strong> {{ app.request.get('q') }} </strong>
+            </div>
+        {% endif %}
+<div class="row">
+    <div class="col-lg-5">
+    <form class="form-group">
+            <input name="q" type="t</div>ext" class="form-control" placeholder="Rechercher.." value="{{ app.request.get('q') }}" >
+    </form>
+    </div>
+    <div class="col-lg-7 text-right">
+        <a href="{{ path(routePrefix ~ '_new') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Ajouter</a>
+    </div>
+</div>
+        <table class="table sortable">
+            <thead class="bg-primary text-white">
+            <tr>
+
+                {% for th in thead %}
+                   {%if tri==true %}
+                   {%set valeur='row.' ~ th %}
+                   {% if valeur in sort %}
+                       <th>{{ sort_by(rows,attribute(theadContent,th),valeur) }}</th>
+                    {%else%}
+                       <th>{{attribute(theadContent,th)}}</th>
+                   {%endif%}
+            
+                    {%else%}
+                    <th>{{attribute(theadContent,th)}}</th>
+                    {%endif%}
+                {% endfor %}
+                <th width="20%">Actions</th>
+            </tr>
+            </thead>
+            <tbody class="tablo">
+            {% for i,row in rows %}
+                {% set link = path(routePrefix ~ '_edit', {id: row.id}) %}
+                <tr  draggable="true" rel="{{ row.id }}">
+                    {% for td in tbody %}
+                        <td>
+                          {% if td=="imageFile"%}
+                          {%if(row.imageFile=='null')%}
+                              <div class="bg_img">Aucune image</div>
+
+                          {%else%}
+                             <div class="bg_img" style="background-position: center;background-size: contain;background-repeat: no-repeat;background-image:url({{vich_uploader_asset(row,"imageFile")}});height:120px"></div>
+                          {%endif%}
+                            {% elseif td=="image"%}
+                                {%if(row.image=='null')%}
+                                    <div class="bg_img">Aucune image</div>
+
+                                {%else%}
+                                    <div class="bg_img" style="background-position: center;background-size: contain;background-repeat: no-repeat;background-image:url({{vich_uploader_asset(row,"imageFile")}});height:80px"></div>
+                                {%endif%}
+                          {% elseif td=="online"%}
+                              <span class="bullet {% if attribute(row,td) == false %}bullet--danger{% endif %}"></span>
+                          {% elseif td=="icon"%}
+                              <i class="{{attribute(row,td) }} fa-2x"></i>
+                          {% elseif td=="couverture"%}
+                              <p style="color:{{ attribute(row,td)  }}">{{ attribute(row,td)  }}</p>
+                          {%else%}
+                           <a>
+                            {{ attribute(row,td) }}
+                           </a>
+
+                        {%endif%}
+                        </td>
+                    {% endfor %}
+                    <td class="d-flex">
+
+                        <a href="{{ path(routePrefix ~ '_clone', {id: row.id}) }}" class="btn btn-primary"><i class="fa fa-clone"></i> </a>
+                         {%if showing==true%}
+                             <a href="{{ path(routePrefix ~ '_show',{id:row.id}) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                        {%endif%}
+                        
+                        <a href="{{ link }}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                        <form action="{{ link }}" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce contenu')">
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="text-center" colspan="{{ theadCount }}">Aucune donnée trouvée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ knp_pagination_render(rows) }}
+
+{% endblock %}

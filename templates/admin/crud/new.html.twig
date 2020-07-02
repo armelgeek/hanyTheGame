@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+
+    <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{path('admin')}}">Tableau de bord</a></li>
+            <li class="breadcrumb-item">{{title}}</li>
+        </ol>
+
+        <div class="page-header">
+            <h1>{{title}}</h1>
+        </div>
+    {{ include('admin/crud/_form.html.twig') }}
+
+{% endblock %}

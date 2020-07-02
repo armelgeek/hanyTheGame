@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-lg-12 mb-4">
+      <a href="{{ path(routePrefix  ~'_index') }}" class="btn btn-primary"><i class="fa fa-angle-double-left"></i> Revenir à la liste</a>
+    </div>
+</div>
+{{ form_start(form)  }}
+    {{ form_widget(form) }}
+{% if selection!="not" %}
+    <div class="form-group">
+        <button type="button" id="add_{{ selection }}" class="btn btn-primary"><i class="fa fa-clone"></i> Ajouter plus de {{ selection }}</button>
+    </div>
+
+
+
+    <script>
+        var $container = $("div#automatic_form_{{ selection }}");
+        var $selection="{{ selection }}";
+    </script>
+{% endif %}
+
+<button type="submit" class="btn btn-primary mt-4"><i class="fa fa-save"></i> {{ button_label|default('Enregistrer') }}</button>
+<button type="reset" class="btn btn-info mt-4"><i class="fa fa-times"></i> Annuler</button>
+
+{{ form_end(form) }}
